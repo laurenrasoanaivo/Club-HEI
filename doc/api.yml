@@ -1,0 +1,473 @@
+openapi: '3.0.2'
+info:
+  title: Clubs HEI
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+tags:
+  - name: Students
+  - name: Groups
+  - name: Clubs
+  - name: Members
+  - name: Events
+paths:
+  /students:
+    get:
+      tags:
+        - Students
+      operationId: getStudents
+      summary: Get all students
+      description: Get all students with details
+      responses:
+        '200':
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - Students
+      operationId: Change informations
+      summary: Change student's informations
+      description: Change student's informations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateStudent'
+        required: true
+      responses:
+        '200':
+          description: Update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad request
+
+  /students/{id}:
+    get:
+      tags:
+        - Students
+      operationId: getStudentById
+      summary: Get student by id
+      description: Get student by id with details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Details of one student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Students
+      operationId: Delete student
+      summary: Delete student
+      description: Delete student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete success  
+
+  /groups:
+    get:
+      tags:
+        - Groups
+      operationId: getGroups
+      summary: Get all groups
+      description: Get all groups with details
+      responses:
+        '200':
+          description: List of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - Groups
+      operationId: Change informations
+      summary: Change group's informations
+      description: Change group's informations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateGroup'
+        required: true
+      responses:
+        '200':
+          description: Update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad request
+
+  /groups/{id}:
+    get:
+      tags:
+        - Groups
+      operationId: getGroupById
+      summary: Get group by id
+      description: Get group by id with details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Details of one group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Groups
+      operationId: Delete group
+      summary: Delete group
+      description: Delete group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete success           
+
+  /clubs:
+    get:
+      tags:
+        - Clubs
+      operationId: getClubs
+      summary: Get all clubs
+      description: Get all clubs with details
+      responses:
+        '200':
+          description: List of clubs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Club'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - Clubs
+      operationId: Change information
+      summary: Change club's information
+      description: Change club's information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateClub'
+        required: true
+      responses:
+        '200':
+          description: Update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Club'
+        '400':
+          description: Bad request
+
+  /clubs/{id}:
+    get:
+      tags:
+        - Clubs
+      operationId: getClubById
+      summary: Get club by id
+      description: Get club by id with details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Details of one club
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Club'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Clubs
+      operationId: Delete club
+      summary: Delete club
+      description: Delete club
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete success         
+
+  /members:
+    get:
+      tags:
+        - Members
+      operationId: getMembers
+      summary: Get all members
+      description: Get all members with details
+      responses:
+        '200':
+          description: List of members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+        '400':
+          description: Bad request
+
+  /events:
+    get:
+      tags:
+        - Events
+      operationId: getEvents
+      summary: Get all events
+      description: Get all events with details
+      responses:
+        '200':
+          description: List of Events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - Events
+      operationId: Change information
+      summary: Change event's information
+      description: Change event's information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateEvent'
+        required: true
+      responses:
+        '200':
+          description: Update
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        '400':
+          description: Bad request
+
+  /events/{id}:
+    get:
+      tags:
+        - Events
+      operationId: getEventById
+      summary: Get event by id
+      description: Get event by id with details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Details of one event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Events
+      operationId: Delete event
+      summary: Delete event
+      description: Delete event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Delete success  
+
+components:
+  schemas:
+    CreateStudent:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: Rabe
+        last_name:
+          type: string
+          example: Rakoto
+        email:  
+          type: string
+          example: hei.rakoto@gmail.com
+        gender:
+          type: string
+          example: Rakoto
+        group_name:
+          type: string
+          example: G1
+        club_names:
+          type: array
+          items:
+            type: string
+            example: basket
+    Student:
+      properties:
+        id:
+          type: integer
+          example: 10
+        first_name:
+          type: string
+          example: Rakoto
+        last_name:
+          type: string
+          example: Rakoto
+        email:  
+          type: string
+          example: Rakoto
+        gender:
+          type: string
+          example: Rakoto
+        group:
+         $ref: '#/components/schemas/Group'
+        club:
+          type: array
+          items:
+            $ref: '#/components/schemas/Club'
+      
+
+    CreateGroup:
+      type: object
+      properties:
+        group_name:
+          type: string
+          example: G1
+    Group:
+      allOf:
+        - $ref: '#/components/schemas/CreateGroup'
+      properties:
+        id:
+          type: integer
+          example: 10
+
+    Member:
+      allOf:
+        - $ref: '#/components/schemas/Student'
+
+
+    CreateClub:
+      type: object
+      properties:
+        name:
+          type: string
+          example: basket
+        description:
+          type: string
+          example: string
+        leader_name:  
+          type: string
+          example: Rakoto
+        creation_date:
+          type: string
+          format: date
+          example: '26-08-2022'
+    Club:
+      allOf:
+        - $ref: '#/components/schemas/CreateClub'
+      properties:
+        id:
+          type: integer
+          example: 10  
+
+    CreateEvent:
+      type: object
+      properties:
+        event_name:
+          type: string
+          example: assistance
+        event_description:
+          type: string
+          example: string
+        event_date:
+          type: string
+          format: date
+          example: '26-08-2022'
+    Event:
+      allOf:
+        - $ref: '#/components/schemas/CreateEvent'
+      properties:
+        id:
+          type: integer
+          example: 10
