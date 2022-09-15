@@ -8,7 +8,6 @@ tags:
   - name: Students
   - name: Groups
   - name: Clubs
-  - name: Members
   - name: Events
 paths:
   /students:
@@ -18,6 +17,17 @@ paths:
       operationId: getStudents
       summary: Get all students
       description: Get all students with details
+      parameters:
+        - name: first_name
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: groups_name
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: List of students
@@ -35,13 +45,22 @@ paths:
       operationId: Change informations
       summary: Change student's informations
       description: Change student's informations
+      parameters:
+        - name: groups_id
+          in: query
+          schema:
+            type: integer
+          required: true
+        - name: club_id
+          in: query
+          schema:
+            type: integer
+          required: false
       requestBody:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreateStudent'
+              $ref: '#/components/schemas/CreateStudent'
         required: true
       responses:
         '200':
@@ -49,9 +68,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Student'
+                $ref: '#/components/schemas/Student'
         '400':
           description: Bad request
 
@@ -77,21 +94,65 @@ paths:
                 $ref: '#/components/schemas/Student'
         '400':
           description: Bad request
-    delete:
+    patch:
       tags:
         - Students
-      operationId: Delete student
-      summary: Delete student
-      description: Delete student
+      operationId: Change one or more information
+      summary: Change one or more student's information
+      description: |
+        Changes options : 
+        * groups_id: change
+        * club_id: change
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+        - name: groups_id
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: club_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        204:
+          description: update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        '400':
+          description: Bad request  
+
+  /members:
+    get:
+      tags:
+        - Students
+      operationId: getStudentsClubNotNull
+      summary: Get all students with club not null
+      description: Get all students with club not null
+      parameters:
+        - name: club_name
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
-          description: Delete success  
+          description: List of students with club not null
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad request  
 
   /groups:
     get:
@@ -121,9 +182,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreateGroup'
+              $ref: '#/components/schemas/CreateGroup'
         required: true
       responses:
         '200':
@@ -131,9 +190,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Group'
+                $ref: '#/components/schemas/Group'
         '400':
           description: Bad request
 
@@ -158,22 +215,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Group'
         '400':
-          description: Bad request
-    delete:
+          description: Bad request   
+    patch:
       tags:
         - Groups
-      operationId: Delete group
-      summary: Delete group
-      description: Delete group
+      operationId: Change one information
+      summary: Change one or more group's information
+      description: |
+        Changes options : 
+        * name: change
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
-        '200':
-          description: Delete success           
+        204:
+          description: update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        '400':
+          description: Bad request               
 
   /clubs:
     get:
@@ -182,6 +252,12 @@ paths:
       operationId: getClubs
       summary: Get all clubs
       description: Get all clubs with details
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: List of clubs
@@ -203,9 +279,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreateClub'
+              $ref: '#/components/schemas/CreateClub'
         required: true
       responses:
         '200':
@@ -213,9 +287,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Club'
+                $ref: '#/components/schemas/Club'
         '400':
           description: Bad request
 
@@ -240,41 +312,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/Club'
         '400':
-          description: Bad request
-    delete:
+          description: Bad request    
+    patch:
       tags:
         - Clubs
-      operationId: Delete club
-      summary: Delete club
-      description: Delete club
+      operationId: Change one or more information
+      summary: Change one or more club's information
+      description: |
+        Changes options : 
+        * name: change
+        * description: change
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
-        '200':
-          description: Delete success         
-
-  /members:
-    get:
-      tags:
-        - Members
-      operationId: getMembers
-      summary: Get all members
-      description: Get all members with details
-      responses:
-        '200':
-          description: List of members
+        204:
+          description: update
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Member'
+                $ref: "#/components/schemas/Club"
         '400':
-          description: Bad request
+          description: Bad request             
 
   /events:
     get:
@@ -283,6 +355,17 @@ paths:
       operationId: getEvents
       summary: Get all events
       description: Get all events with details
+      parameters:
+        - name: event_name
+          in: query
+          schema:
+            type: string
+          required: false
+        - name: club_name
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: List of Events
@@ -300,13 +383,17 @@ paths:
       operationId: Change information
       summary: Change event's information
       description: Change event's information
+      parameters:
+        - name: club_id
+          in: query
+          schema:
+            type: integer
+          required: true
       requestBody:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreateEvent'
+              $ref: '#/components/schemas/CreateEvent'
         required: true
       responses:
         '200':
@@ -314,9 +401,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/Event'
         '400':
           description: Bad request
 
@@ -342,31 +427,62 @@ paths:
                 $ref: '#/components/schemas/Event'
         '400':
           description: Bad request
-    delete:
+    patch:
       tags:
         - Events
-      operationId: Delete event
-      summary: Delete event
-      description: Delete event
+      operationId: Change one or more information
+      summary: Change one or more event's information
+      description: |
+        Changes options : 
+        * start_event: change
+        * end_event: change
+        * club_id: change
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+        - name: start_event
+          in: query
+          required: false
+          schema:
+            type: string
+            format: LocalDateTime
+        - name: end_event
+          in: query
+          required: false
+          schema:
+            type: string
+            format: LocalDateTime
+        - name: club_id
+          in: query
+          required: false
+          schema:
+            type: integer
       responses:
-        '200':
-          description: Delete success  
+        204:
+          description: update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        '400':
+          description: Bad request         
+
 
 components:
   schemas:
     CreateStudent:
       type: object
       properties:
-        first_name:
+        ref:
+          type: string
+          example: STD21001
+        firstName:
           type: string
           example: Rabe
-        last_name:
+        lastName:
           type: string
           example: Rakoto
         email:  
@@ -374,44 +490,27 @@ components:
           example: hei.rakoto@gmail.com
         gender:
           type: string
-          example: Rakoto
-        group_name:
-          type: string
-          example: G1
-        club_names:
-          type: array
-          items:
-            type: string
-            example: basket
+          enum:
+            - F
+            - M
     Student:
+      allOf:
+        - $ref: "#/components/schemas/CreateStudent"
       properties:
-        id:
-          type: integer
-          example: 10
-        first_name:
-          type: string
-          example: Rakoto
-        last_name:
-          type: string
-          example: Rakoto
-        email:  
-          type: string
-          example: Rakoto
-        gender:
-          type: string
-          example: Rakoto
         group:
          $ref: '#/components/schemas/Group'
-        club:
+        clubs:
           type: array
           items:
             $ref: '#/components/schemas/Club'
+        id:
+          type: integer
+          example: 10     
       
-
     CreateGroup:
       type: object
       properties:
-        group_name:
+        name:
           type: string
           example: G1
     Group:
@@ -422,11 +521,6 @@ components:
           type: integer
           example: 10
 
-    Member:
-      allOf:
-        - $ref: '#/components/schemas/Student'
-
-
     CreateClub:
       type: object
       properties:
@@ -436,17 +530,14 @@ components:
         description:
           type: string
           example: string
-        leader_name:  
-          type: string
-          example: Rakoto
-        creation_date:
-          type: string
-          format: date
-          example: '26-08-2022'
     Club:
       allOf:
         - $ref: '#/components/schemas/CreateClub'
       properties:
+        creation_date:
+          type: string
+          format: date
+          example: '26-08-2022'
         id:
           type: integer
           example: 10  
@@ -454,20 +545,26 @@ components:
     CreateEvent:
       type: object
       properties:
-        event_name:
+        name:
           type: string
           example: assistance
-        event_description:
+        description:
           type: string
           example: string
-        event_date:
+        startEvent:
           type: string
-          format: date
-          example: '26-08-2022'
+          format: LocalDateTime
+          example: '2022-01-02T08:00:00'
+        endEvent:
+          type: string
+          format: LocalDateTime
+          example: '2022-01-02T10:00:00'
     Event:
       allOf:
         - $ref: '#/components/schemas/CreateEvent'
       properties:
+        club:
+          $ref: '#/components/schemas/Club'
         id:
           type: integer
           example: 10
